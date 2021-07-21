@@ -1,0 +1,79 @@
+from kiteconnect import KiteConnect
+from kiteconnect import KiteTicker
+import pandas as pd
+import datetime
+import pdb
+import xlwings as xw
+
+
+kws = ""
+kite = ""
+
+api_k = "xxxxxxxxxxxx"  # api_key
+api_s = "xxxxxxxxxxxxx"  # api_secret
+
+
+def get_login(api_k, api_s):  # log in to zerodha API panel
+    global kws, kite
+    kite = KiteConnect(api_key=api_k)
+
+    # print("[*] Generate access Token : ", kite.login_url())
+    # request_tkn = input("[*] Enter Your Request Token Here : ")
+    # data = kite.generate_session(request_tkn, api_secret=api_s)
+    # kite.set_access_token(data["access_token"])
+    # kws = KiteTicker(api_k, data["access_token"])
+    # print(data['access_token'])
+
+    # # # pdb.set_trace()
+    kite.set_access_token('xxxxxxxxxxxxx')
+    kws = KiteTicker(api_k, 'xxxxxxxxxxx')
+
+
+get_login(api_k, api_s)
+
+subscribe = []
+trd_portfolio = {}
+
+
+wb = xw.Book('tick data.xlsx')
+sht = wb.sheets['Sheet1']
+
+
+def read_excel():
+    for x in range(2, 100):
+        val = sht.range('A'+str(x)).value
+        if val == None:
+            break
+        name = val.split("/")[0]
+        token = int(val.split("/")[1])
+        subscribe.append(token)
+        trd_portfolio[token] = {"name": name, "row": x}
+
+
+read_excel()
+
+
+def on_ticks(ws, ticks):
+
+    for tick in ticks:
+        token = tick['instrument_token']
+        row = trd_portfolio[token]['row']
+
+        sht.range('B'+str(row)).value = tick['last_price']
+        sht.range('C'+str(row)).value = tick['ohlc']['open']
+        sht.range('D'+str(row)).value = tick['ohlc']['high']
+        sht.range('E'+str(row)).value = tick['ohlc']['low']
+        sht.range('F'+str(row)).value = tick['ohlc']['close']
+        sht.range('G'+str(row)).value = tick['volume']
+    print(datetime.datetime.now())
+    # pdb.set_trace()
+
+
+def on_connect(ws, response):
+    ws.subscribe(subscribe)
+    ws.set_mode(ws.MODE_FULL, subscribe)
+
+
+kws.on_ticks = on_ticks
+kws.on_connect = on_connect
+kws.connect()
