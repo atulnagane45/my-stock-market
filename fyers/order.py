@@ -1,17 +1,12 @@
-from fyers_api import fyersModel
-access_token = 'gAAAAABg7_w4YT-3EEFuIcL8SO9yXhnpJCqlhc4QC4nxzE0TWzRVh6FQ7Hu6KDwfgvkSHNRJgZ_mlZP89HTMEV41vq2n4l7zqCpKbRXUBqbJCbwLQRO2FJc=&user_id=XA08240&poa_flag=N'
-token = access_token
+from session import token, fyers
 
-is_async = False #(By default False, Change to True for asnyc API calls.)
 
-fyers = fyersModel.FyersModel(is_async)
-
-def buyOrder():
+def optionBuyOrder(symbol):
     #   NSE:BANKNIFTY20N0525000PE
-    data = { "symbol":"NSE:BANKNIFTY20N0525000PE",
-        "qty":1,
+    data = { "symbol":symbol,
+        "qty":25,
         "type":2,  
-        "side":1, 
+        "side":1,                        # 1 => Buy   -1 => Sell
         "productType":"INTRADAY",   
         "limitPrice":0,
         "stopPrice":0 ,
@@ -22,12 +17,12 @@ def buyOrder():
         "takeProfit":0
     }
 
-    return fyers.place_basket_orders(data)
+    return fyers.place_orders(token, data)
     
-def sellOrder():
-    #   NSE:BANKNIFTY20N0525000PE
-    data = { "symbol":"NSE:BANKNIFTY20N0525000PE",
-        "qty":1,
+def optionSellOrder(symbol):
+    #NSE:BANKNIFTY20N0525000PE
+    data = { "symbol":symbol,
+        "qty":25,
         "type":2,  
         "side":-1,                                     # 1 => Buy   -1 => Sell
         "productType":"INTRADAY",   
@@ -40,4 +35,4 @@ def sellOrder():
         "takeProfit":0
     }
 
-    return fyers.place_basket_orders(data)
+    return fyers.place_orders(token, data)
