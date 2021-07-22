@@ -1,2 +1,3 @@
 venv/
 *.yml
+.DS_Store
