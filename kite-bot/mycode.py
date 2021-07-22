@@ -7,9 +7,9 @@ import pdb
 kws = ""
 kite = ""
 
-api_k = "27lmb8kathxysugy"  # api_key
-api_s = "gkrkwqc96crjubarzg8ybbbbhbji1425"  # api_secret
-access_token = "7TLZNqfzi6w5cK417xkBO23VKa5Nfsk3"
+api_k = " "  # api_key
+api_s = " "  # api_secret
+access_token = " "
 
 
 def get_login(api_k, api_s):  # log in to zerodha API panel

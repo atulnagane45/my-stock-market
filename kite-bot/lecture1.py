@@ -2,7 +2,7 @@ from kiteconnect import KiteConnect
 
 import pdb
 
-api_key = "27lmb8kathxysugy"  # id
+api_key = " "  # id
 #api_secret = "gkrkwqc96crjubarzg8ybbbbhbji1425"  # pass
 # request_token = "bB3Cy7vmPrLzyg9eGFHJylFTaPzbz5nE"  # otp
 
